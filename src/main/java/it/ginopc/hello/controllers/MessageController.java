@@ -1,6 +1,7 @@
 package it.ginopc.hello.controllers;
 
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.validation.Valid;
@@ -37,12 +38,12 @@ public class MessageController {
 	
 	@GetMapping(path="/{id}")
 	public @ResponseBody Optional<Message> findById(@PathVariable Long id){
-		log.info("User.findById("+ id + ")");
+		log.log(Level.INFO, "User.findById({0})", id);
 		return service.findById(id);
 	}
 	
 	@PostMapping
-	public ResponseEntity create(@Valid @RequestBody Message message) {
+	public ResponseEntity<Message> create(@Valid @RequestBody Message message) {
 		log.info("User.create");
 		return ResponseEntity.ok(service.save(message));
 	}
@@ -51,7 +52,7 @@ public class MessageController {
 	public ResponseEntity<Message> update(@PathVariable Long id, @Valid @RequestBody Message message){
 		log.info("User.update");
 		if (!service.findById(id).isPresent()) {
-			log.severe("Id " + id + " is not present!");
+			log.log(Level.SEVERE, "Id {0} is not present!", id);
 			ResponseEntity.badRequest().build();
 		}
 		
@@ -59,10 +60,10 @@ public class MessageController {
 	}
 	
 	@DeleteMapping(path="/{id}")
-	public ResponseEntity delete(@PathVariable Long id) {
-		log.info("User.delete("+ id + ")");
+	public ResponseEntity<Message> delete(@PathVariable Long id) {
+		log.log(Level.INFO, "User.delete({0})", id);
 		if (!service.findById(id).isPresent()) {
-			log.severe("Id " + id + " is not present!");
+			log.log(Level.SEVERE, "Id {0} is not present!", id);
 			ResponseEntity.badRequest().build();
 		}
 		

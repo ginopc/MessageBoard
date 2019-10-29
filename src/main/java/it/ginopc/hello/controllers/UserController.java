@@ -1,6 +1,7 @@
 package it.ginopc.hello.controllers;
 
 import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.validation.Valid;
@@ -49,7 +50,7 @@ public class UserController {
 	public ResponseEntity<User> update(@PathVariable Long id, @Valid @RequestBody User user){
 		
 		if (!service.findById(id).isPresent()) {
-			log.severe("Id " + id + " is not present!");
+			log.log(Level.SEVERE, "Id {0} is not present!", id);
 			ResponseEntity.badRequest().build();
 		}
 		
@@ -60,7 +61,7 @@ public class UserController {
 	public ResponseEntity delete(@PathVariable Long id) {
 		
 		if (!service.findById(id).isPresent()) {
-			log.severe("Id " + id + " is not present!");
+			log.log(Level.SEVERE, "Id {0} is not present!", id);
 			ResponseEntity.badRequest().build();
 		}
 		
